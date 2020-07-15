@@ -1,0 +1,35 @@
+func trap(height []int) int {
+	leftMax, rightMax := leftRightMax(height)
+	result := 0
+	for i:=0; i<len(height); i++{
+		if leftMax[i] < rightMax[i]{
+			result += leftMax[i] - height[i]
+		}else{
+			result += rightMax[i] - height[i]
+		}
+	}
+	return result
+}
+
+func leftRightMax(height []int) ([]int, []int){
+	n := len(height)
+	leftMax := make([]int, n)
+	rightMax := make([]int, n)
+	left := 0
+	right := 0
+	for i:=0; i<n; i++{
+		if height[i] > left{
+			leftMax[i] = height[i]
+			left = height[i]
+		}else{
+			leftMax[i] = left
+		}
+		if height[n-1-i] > right{
+			rightMax[n-1-i] = height[n-1-i]
+			right = height[n-1-i]
+		}else{
+			rightMax[n-1-i] = right
+		}
+	}
+	return leftMax, rightMax
+}
