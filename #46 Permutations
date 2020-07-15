@@ -1,0 +1,24 @@
+func permute(nums []int) [][]int {
+	n := len(nums)
+	if n == 1{
+		result := make([][]int, 1)
+		result[0] = nums
+		return result
+	}
+	var result [][]int
+	var temp []int
+	subResult := permute(nums[1:])
+	var e []int
+	for i:=0; i<n; i++{
+
+		for j, _:= range subResult {
+			e = subResult[j]
+			temp = append(temp, e[:i] ...)
+			temp = append(temp, nums[0])
+			temp = append(temp, e[i:]...)
+			result = append(result, temp)
+			temp = nil
+		}
+	}
+	return result
+}
