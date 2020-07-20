@@ -1,0 +1,30 @@
+func luckyNumbers (matrix [][]int) []int {
+	m := len(matrix)
+	n := len(matrix[0])
+	var result []int
+
+	rowMin := make([]int, m)
+	colMax := make([]int, n)
+	var tempRow int
+
+	for i:=0; i<m; i++{
+		tempRow = matrix[i][0]
+		for j:=0; j<n; j++{
+			if matrix[i][j] <tempRow{
+				tempRow = matrix[i][j]
+			}
+			if matrix[i][j] > colMax[j]{
+				colMax[j] = matrix[i][j]
+			}
+		}
+		rowMin[i] = tempRow
+	}
+	for i:=0; i<m; i++{
+		for j:=0; j<n; j++{
+			if rowMin[i] == colMax[j]{
+				result = append(result, rowMin[i])
+			}
+		}
+	}
+	return result
+}
