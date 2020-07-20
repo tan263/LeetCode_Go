@@ -1,0 +1,15 @@
+func myPow(x float64, n int) float64 {
+	if n == 0{
+		return 1.0
+	}
+	if n < 0{
+		return myPow(1/x, -n)
+	}
+	
+	root := myPow(x, n/2)
+	if n%2 == 0{
+		return root*root
+	}else{
+		return root*root*x
+	}
+}
