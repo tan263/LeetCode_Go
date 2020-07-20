@@ -1,0 +1,48 @@
+func restoreIpAddresses(s string) []string {
+	l := len(s)
+	left, right := 2, 6
+	if l-6 > 2{ left = l-6}
+	if l-2 < 6{ right = l-2}
+
+	var ips []string
+
+	if left > right{
+		return ips
+	}
+
+	var a1, b1, a2, b2 int
+
+	for i:=left; i<=right; i++{
+		a1 = 1
+		a2 = 3
+		if i-3 > 1{	a1 = i-3}
+		if i-1 < 3{ a2 = i-1}
+		if a1 > a2{ return ips}
+
+		b1 = i+1
+		b2 = i+3
+		if l-3 > i+1{ b1 = l-3}
+		if l-1 < i+3{ b2 = l-1}
+		if b1 > b2{ return ips}
+
+		var n1, n2, n3, n4 int
+
+		for a:=a1; a<=a2; a++{
+			for b:=b1; b<=b2; b++{
+				n1, _ = strconv.Atoi(s[:a])
+				n2, _ = strconv.Atoi(s[a:i])
+				n3, _ = strconv.Atoi(s[i:b])
+				n4, _ = strconv.Atoi(s[b:])
+				if n1 < 256 && n2 < 256 && n3 < 256 && n4 < 256{
+					if !(n1 < 10 && a==2) && !(n2 < 10 && i-a==2) && !(n3 < 10 && b-i==2) && !(n4 < 10 && l-b==2) &&
+						!(n1 < 100 && a==3) && !(n2 < 100 && i-a==3) && !(n3 < 100 && b-i==3) && !(n4 < 100 && l-b==3){
+						fmt.Println(a ,i ,b)
+						fmt.Println(n1,n2,n3,n4)
+						ips = append(ips, s[:a] + "." + s[a:i] + "." + s[i:b] + "." +s[b:])
+					}
+				}
+			}
+		}
+	}
+	return ips
+}
