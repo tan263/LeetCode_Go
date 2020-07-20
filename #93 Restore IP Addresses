@@ -36,8 +36,6 @@ func restoreIpAddresses(s string) []string {
 				if n1 < 256 && n2 < 256 && n3 < 256 && n4 < 256{
 					if !(n1 < 10 && a==2) && !(n2 < 10 && i-a==2) && !(n3 < 10 && b-i==2) && !(n4 < 10 && l-b==2) &&
 						!(n1 < 100 && a==3) && !(n2 < 100 && i-a==3) && !(n3 < 100 && b-i==3) && !(n4 < 100 && l-b==3){
-						fmt.Println(a ,i ,b)
-						fmt.Println(n1,n2,n3,n4)
 						ips = append(ips, s[:a] + "." + s[a:i] + "." + s[i:b] + "." +s[b:])
 					}
 				}
