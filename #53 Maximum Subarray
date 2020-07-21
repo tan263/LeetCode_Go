@@ -1,0 +1,14 @@
+func maxSubArray(nums []int) int {
+    result := nums[0]
+	temp := 0
+    for _,v := range nums{
+		temp += v
+		if v > temp{
+			temp = v
+		}
+		if temp > result{
+			result = temp
+		}
+	}
+	return result
+}
