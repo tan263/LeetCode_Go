@@ -1,0 +1,33 @@
+func longestPalindromeSubseq(s string) int {
+	l := len(s)
+	sub := make([][]int, l)
+	for i := 0; i < l; i++ {
+		sub[i] = make([]int, l+1)
+		sub[i][i] = 0
+		sub[i][i+1] = 1
+	}
+	var n1, n2, n3, m int
+	for n := 1; n < l; n++ {
+		for i := 0; i < l-n; i++ {
+			n1 = 0
+			if s[i] == s[i+n] {
+				n1 = sub[i+1][i+n] + 2
+			}
+			n2 = sub[i][i+n]
+			n3 = sub[i+1][i+n+1]
+
+			m = max(n1, n2)
+			m = max(m, n3)
+			sub[i][i+n+1] = m
+		}
+	}
+	return sub[0][l]
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
+}
