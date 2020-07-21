@@ -1,0 +1,21 @@
+func dailyTemperatures(T []int) []int {
+	n := len(T)
+	waitTime := make([]int, n)
+	var stackIndex []int
+	var l int
+	for k, v := range T {
+		l = len(stackIndex)
+		for i, s := range stackIndex {
+			if v > T[s] {
+				l = i
+				break
+			}
+		}
+		for _, s := range stackIndex[l:] {
+			waitTime[s] = k - s
+		}
+		stackIndex = stackIndex[:l]
+		stackIndex = append(stackIndex, k)
+	}
+	return waitTime
+}
