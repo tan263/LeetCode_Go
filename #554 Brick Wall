@@ -1,0 +1,25 @@
+func leastBricks(wall [][]int) int {
+	width := 0
+	for _, w := range wall[0] {
+		width += w
+	}
+	count := make(map[int]int)
+	h := len(wall)
+	var w int
+
+	result := h
+	for i := 0; i < h; i++ {
+		w = 0
+		for j := 0; j < len(wall[i])-1; j++ {
+			w += wall[i][j]
+			if _, ok := count[w]; !ok {
+				count[w] = h
+			}
+			count[w]--
+			if count[w] < result {
+				result = count[w]
+			}
+		}
+	}
+	return result
+}
