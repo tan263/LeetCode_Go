@@ -1,0 +1,32 @@
+func gameOfLife(board [][]int)  {
+	m, n := len(board), len(board[0])
+	paddedBoard := make([][]int, m+2)
+	paddedBoard[0] = make([]int, n+2)
+	paddedBoard[m+1] = make([]int, n+2)
+	for i:=0; i<m; i++{
+		paddedBoard[i+1] = []int{0}
+		paddedBoard[i+1] = append(paddedBoard[i+1],board[i]...)
+		paddedBoard[i+1] = append(paddedBoard[i+1], 0)
+	}
+	
+	var c int
+	for i:=1; i<=m; i++{
+		for j:=1; j<=n; j++{
+			c = paddedBoard[i-1][j-1]
+			c += paddedBoard[i-1][j]
+			c += paddedBoard[i-1][j+1]
+			c += paddedBoard[i][j-1]
+			c += paddedBoard[i][j+1]
+			c += paddedBoard[i+1][j-1]
+			c += paddedBoard[i+1][j]
+			c += paddedBoard[i+1][j+1]
+			if c<2{
+				board[i-1][j-1] = 0
+			} else if c == 3{
+				board[i-1][j-1] = 1
+			} else if c > 3{
+				board[i-1][j-1] = 0
+			}
+		}
+	}
+}
