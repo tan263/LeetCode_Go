@@ -1,0 +1,35 @@
+func leastInterval(tasks []byte, n int) int {
+	temp := make(map[int]int)
+	for _, s := range tasks {
+		temp[int(s)]++
+	}
+	var count []int
+	for _, v := range temp {
+		count = append(count, v)
+	}
+	return least(count, n)
+}
+
+func least(count []int, n int) int {
+	l := len(count)
+	if l == 0 {
+		return 0
+	}
+	sort.Ints(count)
+	if count[l-1] == 1 {
+		return l
+	}
+	i := 0
+	for k := 1; k <= n+1; k++ {
+		if i < l {
+			count[l-1-i]--
+			if count[l-1-i] == 0 {
+				count = append(count[:l-1-i], count[l-i:]...)
+			}
+			i++
+		} else {
+			break
+		}
+	}
+	return n + 1 + least(count, n)
+}
