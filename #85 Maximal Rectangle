@@ -1,0 +1,46 @@
+func maximalRectangle(matrix [][]byte) int {
+	m := len(matrix)
+	if m == 0 {
+		return 0
+	}
+	n := len(matrix[0])
+	rowCount := make([][]byte, m)
+	area := 0
+	var temp int
+	for i := 0; i < m; i++ {
+		rowCount[i] = make([]byte, n)
+		if matrix[i][0] == '1' {
+			rowCount[i][0] = 1
+		}
+		temp = includeCurrent(rowCount, i, 0)
+		if temp > area {
+			area = temp
+		}
+		for j := 1; j < n; j++ {
+			if matrix[i][j] == '1' {
+				rowCount[i][j] = rowCount[i][j-1] + 1
+			}
+			temp = includeCurrent(rowCount, i, j)
+			if temp > area {
+				area = temp
+			}
+		}
+	}
+	return area
+}
+
+func includeCurrent(rowCount [][]byte, i, j int) int {
+	w := rowCount[i][j]
+	var temp int
+	area := int(w)
+	for h := 1; i-h >= 0; h++ {
+		if w > rowCount[i-h][j] {
+			w = rowCount[i-h][j]
+		}
+		temp = (h + 1) * int(w)
+		if temp > area {
+			area = temp
+		}
+	}
+	return area
+}
