@@ -1,0 +1,25 @@
+func evalRPN(tokens []string) int {
+	i := 2
+	var a, b int
+	for len(tokens) > 1 {
+		if tokens[i] == "+" || tokens[i] == "-" || tokens[i] == "*" || tokens[i] == "/" {
+			a, _ = strconv.Atoi(tokens[i-2])
+			b, _ = strconv.Atoi(tokens[i-1])
+			if tokens[i] == "+" {
+				tokens[i-2] = strconv.Itoa(a + b)
+			} else if tokens[i] == "-" {
+				tokens[i-2] = strconv.Itoa(a - b)
+			} else if tokens[i] == "*" {
+				tokens[i-2] = strconv.Itoa(a * b)
+			} else if tokens[i] == "/" {
+				tokens[i-2] = strconv.Itoa(a / b)
+			}
+			tokens = append(tokens[:i-1], tokens[i+1:]...)
+			i --
+		} else{
+			i ++
+		}
+	}
+	result, _ := strconv.Atoi(tokens[0])
+	return result
+}
