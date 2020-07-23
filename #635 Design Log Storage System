@@ -1,0 +1,40 @@
+type LogSystem struct {
+	timestamps map[string][]int
+}
+
+func Constructor() LogSystem {
+	return LogSystem{ make(map[string][]int)}
+}
+
+func (this *LogSystem) Put(id int, timestamp string) {
+	this.timestamps[timestamp] = append(this.timestamps[timestamp], id)
+}
+
+func (this *LogSystem) Retrieve(s string, e string, gra string) []int {
+	var i int
+	var result []int
+	switch gra {
+	case "Year":
+		i = 4
+	case "Month":
+		i = 7
+	case "Day":
+		i = 10
+	case "Hour":
+		i = 13
+	case "Minute":
+		i = 16
+	case "Second":
+		i = 19
+	}
+	s = s[: i]
+	e = e[: i]
+	for t, l := range this.timestamps {
+		if s <= t[:i] && t[:i] <= e {
+			for _, id := range l {
+				result = append(result, id)
+			}
+		}
+	}
+	return result
+}
