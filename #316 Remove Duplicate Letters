@@ -1,0 +1,20 @@
+func removeDuplicateLetters(s string) string {
+	c := make(map[byte]int)
+	for i, _ := range s {
+		c[s[i]]++
+	}
+	pos := 0
+	for i, _ := range s {
+		if s[i] < s[pos] {
+			pos = i
+		}
+		c[s[i]] -= 1
+		if c[s[i]] == 0 {
+			break
+		}
+	}
+	if s == ""{
+		return s
+	}
+	return s[pos:pos+1] + removeDuplicateLetters(strings.Replace(s[pos:], s[pos:pos+1], "", -1))
+}
