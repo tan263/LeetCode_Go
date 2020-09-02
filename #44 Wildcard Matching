@@ -1,0 +1,28 @@
+func isMatch(s string, p string) bool {
+	cache := make(map[int]map[int]bool)
+	return helper(0, 0, s, p, cache)
+}
+
+func helper(i, j int, s, p string, cache map[int]map[int]bool) bool {
+	if _, ok := cache[i]; !ok {
+		cache[i] = make(map[int]bool)
+	}
+	if i == len(s) && j == len(p) {
+		return true
+	} else if i != len(s) && j == len(p) {
+		return false
+	} else if i == len(s) && j != len(p) {
+		return strings.Count(p[j:], "*") == len(p)-j
+	} else if match, ok := cache[i][j]; ok {
+		return match
+	} else {
+		if p[j] == '?' {
+			cache[i][j] = helper(i+1, j+1, s, p, cache)
+		} else if p[j] != '?' && p[j] != '*' {
+			cache[i][j] = s[i] == p[j] && helper(i+1, j+1, s, p, cache)
+		} else {
+			cache[i][j] = helper(i, j+1, s, p, cache) || helper(i+1, j, s, p, cache)
+		}
+		return cache[i][j]
+	}
+}
