@@ -1,0 +1,11 @@
+func jump(nums []int) int {
+	storage := make([]int, len(nums))
+	for i, s := range nums {
+		for k := 1; k <= s && i+k < len(nums); k++ {
+			if storage[i+k] == 0 || storage[i+k] > storage[i]+1 {
+				storage[i+k] = storage[i] + 1
+			}
+		}
+	}
+	return storage[len(nums)-1]
+}
