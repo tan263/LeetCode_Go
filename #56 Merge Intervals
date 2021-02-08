@@ -1,0 +1,33 @@
+func merge(intervals [][]int) [][]int {
+	keys, r := preprocess(intervals)
+	sort.Ints(keys)
+	result := make([][]int, 0)
+	result = append(result, []int{keys[0], r[keys[0]]})
+	for _, key := range keys {
+		if key > result[len(result)-1][1] {
+			result = append(result, []int{key, r[key]})
+			continue
+		}
+		if key <= result[len(result)-1][1] && r[key] > result[len(result)-1][1]{
+			result[len(result)-1][1] = r[key]
+		}
+	}
+	return result
+}
+
+
+func preprocess(intervals [][]int) (keys []int, r map[int]int) {
+	r = make(map[int]int)
+
+	for _, interval := range intervals {
+		key := interval[0]
+		if _, ok := r[key]; !ok {
+			keys = append(keys, key)
+		}
+		if interval[1] > r[key] {
+			r[key] = interval[1]
+		}
+	}
+
+	return keys, r
+}
