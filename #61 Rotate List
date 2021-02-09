@@ -1,0 +1,22 @@
+func rotateRight(head *ListNode, k int) *ListNode {
+	last := head
+	n := 0
+	for {
+        if head == nil{
+            return nil
+        }
+        n++
+		if last.Next == nil {
+			break
+		}
+		last = last.Next
+	}
+    k = k % n
+	for i := 0; i < n-k && i < n; i++ {
+		temp := &ListNode{head.Val, nil}
+		last.Next = temp
+		head = head.Next
+		last = last.Next
+	}
+	return head
+}
