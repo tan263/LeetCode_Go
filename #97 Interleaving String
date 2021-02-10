@@ -1,0 +1,42 @@
+func isInterleave(s1 string, s2 string, s3 string) bool {
+	l1 := len(s1)
+	l2 := len(s2)
+	l3 := len(s3)
+	if l1 + l2 != l3 {
+		return false
+	}
+	if l3 == 0 {
+		return true
+	}
+	matrix := make([][][]bool, l1+1)
+	for i := range matrix{
+		matrix[i] = make([][]bool, l2+1)
+		for j := range matrix[i]{
+			matrix[i][j] = make([]bool, l3+1)
+		}
+	}
+
+	matrix[0][0][0] = true
+	for k := 1; k <= l3; k++{
+		for  i := 0; i <= k && i <= l1; i++{
+			j := k-i
+			if j <= l2 {
+				if i != 0{
+					if s1[l1-i] == s3[l3-k]{
+						matrix[i][j][k] = matrix[i-1][j][k-1]
+					}
+					if matrix[i][j][k] == true{
+						continue
+					}
+				}
+				if j != 0{
+					if s2[l2-j] == s3[l3-k]{
+						matrix[i][j][k] = matrix[i][j-1][k-1]
+					}
+				}
+			}
+		}
+	}
+
+	return matrix[l1][l2][l3]
+}
