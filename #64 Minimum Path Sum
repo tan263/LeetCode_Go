@@ -1,0 +1,28 @@
+func minPathSum(grid [][]int) int {
+	m := len(grid)
+	n := len(grid[0])
+	paths := make([][]int, m+1)
+	for i := range paths {
+		paths[i] = make([]int, n+1)
+	}
+
+	for i := m - 1; i >= 0; i-- {
+		paths[i][n-1] = paths[i+1][n-1] + grid[i][n-1]
+	}
+	for j := n - 1; j >= 0; j-- {
+		paths[m-1][j] = paths[m-1][j+1] + grid[m-1][j]
+	}
+	for i := m - 2; i >= 0; i-- {
+		for j := n - 2; j >= 0; j-- {
+			paths[i][j] = min(paths[i][j+1], paths[i+1][j]) + grid[i][j]
+		}
+	}
+	return paths[0][0]
+}
+func min(a int, b int) int{
+	if a <= b{
+		return  a
+	} else {
+		return b
+	}
+}
