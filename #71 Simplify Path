@@ -1,0 +1,26 @@
+func simplifyPath(path string) string {
+	raw := strings.Split(path, "/")
+	var result []string
+	fmt.Println(raw)
+	for _, s := range raw{
+		if s == "" || s == "."{
+			continue
+		}
+		if s == ".."{
+			if len(result) > 0{
+				result = result[:len(result)-1]
+			}
+			continue
+		}
+		result = append(result, s)
+	}
+	if len(result) == 0{
+		return "/"
+	}
+	canoPath := ""
+	for _, s := range result{
+		canoPath = canoPath + "/" + s
+	}
+
+	return canoPath
+}
