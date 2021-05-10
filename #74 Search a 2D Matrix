@@ -1,0 +1,61 @@
+func searchMatrix(matrix [][]int, target int) bool {
+	i := searchRow(matrix, target)
+	if i == -1 {
+		return false
+	}
+	find := searchCol(matrix[i], target)
+
+	return find
+}
+
+func searchRow(matrix [][]int, target int) int{
+	l := len(matrix)
+	if target >= matrix[l-1][0]{
+		return l-1
+	}
+	k1 := 0
+	k2 := l-1
+	t := k2/2
+	for ; ; {
+		if k1 +1 == k2 {
+			if matrix[k2][0] <= target{
+				return  k2
+			} else {
+				return k1
+			}
+		} else if matrix[t][0] <= target && target <= matrix[k2][0] {
+			k1 = t
+			t = (t + k2 + 1) / 2
+		} else if matrix[k1][0] <= target && target <= matrix[t][0] {
+			k2 = t
+			t = (k1 + t) / 2
+		} else {
+			return -1
+		}
+	}
+}
+
+func searchCol(row []int, target int) bool{
+	l := len(row)
+	k1 := 0
+	k2 := l-1
+	t := l/2
+	for ; ; {
+		if k1 + 1 == k2 {
+			if row[k1] != target && row[k2] != target{
+				return false
+			}
+		}
+		if row[t] == target {
+			return true
+		} else if row[t] <= target && target <= row[k2] {
+			k1 = t
+			t = (t + k2 + 1) / 2
+		} else if row[k1] <= target && target < row[t] {
+			k2 = t
+			t = (k1 + t) / 2
+		} else {
+			return false
+		}
+	}
+}
