@@ -1,0 +1,21 @@
+func combine(n int, k int) [][]int {
+	 c := make(map[int]map[int][][]int, n)
+
+	for i := 1; i <= n; i++{
+		c[i] = make(map[int][][]int, i)
+		for j := 1; j <= i && j <= k; j++{
+			if len(c[i-1][j-1]) == 0{
+				c[i][j] = [][]int{{i}}
+			} else {
+				c[i][j] = make([][]int, len(c[i-1][j-1]))
+				for l, _ := range c[i][j]{
+					c[i][j][l] = append([]int(nil), c[i-1][j-1][l]...)
+					c[i][j][l] = append(c[i][j][l], i)
+				}
+			}
+
+			c[i][j] = append(c[i][j], c[i-1][j]...)
+		}
+	}
+	return c[n][k]
+}
