@@ -1,0 +1,30 @@
+func search(nums []int, target int) bool {
+	a := 0
+	b := len(nums) - 1
+	k := (a + b) /2
+	for ; ; {
+		if a == b || a + 1 == b {
+			return nums[a] == target || nums[b] == target
+		}
+		if nums[k] < nums[b] {
+			if nums[k] <= target && target <= nums[b] {
+				a = k
+				k = (a + b) / 2
+			} else {
+				b = k
+				k = (a + b) / 2
+			}
+		} else if nums[b] == nums[k]{
+			b --
+            k = (a + b) /2
+		} else {
+			if nums[a] <= target && target <= nums[k]{
+				b = k
+				k = (a + b) /2
+			} else {
+				a = k
+				k = (a + b) / 2
+			}
+		}
+	}
+}
