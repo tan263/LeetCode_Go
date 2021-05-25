@@ -1,0 +1,22 @@
+func deleteDuplicates(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+	if head.Next == nil {
+		return head
+	}
+	v := head.Val
+	if head.Next != nil && head.Next.Val != v{
+		next := deleteDuplicates(head.Next)
+		head.Next = next
+		return head
+	}
+	for ; head != nil && head.Next != nil && v == head.Next.Val; {
+		head = head.Next
+	}
+
+	if head != nil && head.Val != v{
+		return deleteDuplicates(head)
+	}
+	return deleteDuplicates(head.Next)
+}
