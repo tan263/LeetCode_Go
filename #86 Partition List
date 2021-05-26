@@ -1,0 +1,18 @@
+func partition(head *ListNode, x int) *ListNode {
+	l1Head := &ListNode{}
+	l1Tail := l1Head
+	l2Head := &ListNode{}
+	l2Tail := l2Head
+	for ; head != nil; head = head.Next{
+		if head.Val < x {
+			l1Tail.Next = head
+			l1Tail = head
+		} else {
+			l2Tail.Next = head
+			l2Tail = head
+		}
+	}
+	l1Tail.Next = l2Head.Next
+	l2Tail.Next = nil
+	return l1Head.Next
+}
