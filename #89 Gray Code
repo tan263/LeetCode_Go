@@ -1,0 +1,13 @@
+func grayCode(n int) []int {
+	result := []int{0, 1}
+	for k := 2; k <= n; k++{
+		l := len(result)
+		for i := l-1; i >=0; i--{
+			result = append(result, result[i])
+		}
+		for i := 1; i <= l; i++{
+			result[2*l-i] += int(math.Pow(2, float64(k-1)))
+		}
+	}
+	return result
+}
