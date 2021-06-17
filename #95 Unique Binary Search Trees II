@@ -1,0 +1,31 @@
+func generateTrees(n int) []*TreeNode {
+	storage := make([][][]*TreeNode, n+1)
+	for i := 1; i <= n; i++{
+		storage[i] = make([][]*TreeNode, n+1)
+	}
+	for k := 1; k <= n; k++{
+		for i := 1; i <= n - k + 1; i++{
+			if k == 1 {
+				storage[i][i] = append(storage[i][i], &TreeNode{Val:i})
+				continue
+			}
+
+			for _, right := range storage[i+1][i+k-1]{
+				storage[i][i+k-1] = append(storage[i][i+k-1], &TreeNode{i,nil,right})
+			}
+			for l := i+1; l < i+k; l++{
+				for _, left := range storage[i][l-1]{
+					if l == i + k -1 {
+						storage[i][i+k-1] = append(storage[i][i+k-1], &TreeNode{l,left,nil})
+						continue
+					}
+					for _, right := range storage[l+1][i+k-1]{
+						storage[i][i+k-1] = append(storage[i][i+k-1], &TreeNode{l,left,right})
+					}
+				}
+			}
+		}
+	}
+
+	return storage[1][n]
+}
