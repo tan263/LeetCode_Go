@@ -1,0 +1,32 @@
+func isValidBST(root *TreeNode) bool {
+	left, right := false, false
+
+	if root.Left == nil{
+		left = true
+	} else if root.Left.Val < root.Val{
+		left = isValidBST(root.Left)
+	}
+	if root.Right == nil{
+		right = true
+	} else if root.Right.Val > root.Val{
+		right = isValidBST(root.Right)
+	}
+	if left{
+		for l := root.Left; l != nil; l = l.Right{
+			if l.Val >= root.Val{
+				left = false
+				break
+			}
+		}
+	}
+	if right{
+		for l := root.Right; l != nil; l = l.Left{
+			if l.Val <= root.Val{
+				right = false
+				break
+			}
+		}
+	}
+
+	return left && right
+}
