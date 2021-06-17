@@ -1,0 +1,19 @@
+func numTrees(n int) int {
+	storage1 := make(map[int]int)
+	storage1[1] = 1
+	for i := 1; i < n; i++ {
+		storage2 := make(map[int]int)
+		for rHight, num := range storage1{
+			for h := 0; h <= rHight; h++{
+				storage2[h+1] += num
+			}
+		}
+		storage1 = storage2
+	}
+
+	total := 0
+	for _, num := range storage1{
+		total += num
+	}
+	return total
+}
