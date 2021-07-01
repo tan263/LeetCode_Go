@@ -1,0 +1,31 @@
+func zigzagLevelOrder(root *TreeNode) [][]int {
+	return traverse(root, 0, [][]int{})
+}
+
+func traverse(root *TreeNode, level int, result [][]int) [][]int{
+	if root == nil {
+		return result
+	}
+	
+	if level%2 == 0{
+		if len(result) > level{
+			result[level] = append(result[level], root.Val)
+		} else {
+			result = append(result, []int{root.Val})
+		}
+		level ++
+		result = traverse(root.Left, level, result)
+		result = traverse(root.Right, level, result)
+	} else {
+		if len(result) > level{
+			result[level] = append([]int{root.Val}, result[level]...)
+		} else {
+			result = append(result, []int{root.Val})
+		}
+		level ++
+        result = traverse(root.Left, level, result)
+		result = traverse(root.Right, level, result)
+	}
+
+	return result
+}
