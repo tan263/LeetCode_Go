@@ -1,0 +1,19 @@
+func buildTree(preorder []int, inorder []int) *TreeNode {
+	if len(preorder) == 0{
+		return nil
+	}
+	rootVal := preorder[0]
+	rootInv := -1
+	for i, v:= range inorder{
+		if v == rootVal{
+			rootInv = i
+			break
+		}
+	}
+	subR := rootInv
+	tr := &TreeNode{rootVal,
+		buildTree(preorder[1:subR+1], inorder[:rootInv]),
+		buildTree(preorder[subR+1:], inorder[rootInv+1:])}
+
+	return tr
+}
