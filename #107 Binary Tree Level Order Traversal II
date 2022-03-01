@@ -1,0 +1,27 @@
+func levelOrderBottom(root *TreeNode) [][]int {
+	if root == nil{
+		return [][]int{}
+	}
+	var left [][]int
+	left = levelOrderBottom(root.Left)
+
+	var right [][]int
+	right = levelOrderBottom(root.Right)
+    
+	result := [][]int{{root.Val}}
+	lenL := len(left)
+	lenR := len(right)
+	if  lenR >= lenL && lenR > 0{
+		for i := range left{
+			right[lenR - 1 - i] = append(left[lenL - 1 - i], right[lenR - 1 - i]...)
+		}
+		result = append(right, result...)
+	} else if lenR < lenL && lenL > 0{
+		for i := range right{
+			left[lenL - 1 - i] = append(left[lenL - 1 - i], right[lenR - 1 - i]...)
+		}
+		result = append(left, result...)
+	}
+
+	return result
+}
