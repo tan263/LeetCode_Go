@@ -1,0 +1,19 @@
+func flatten(root *TreeNode)  {
+	if root != nil {
+		right := root.Right
+		leftRight := root.Left
+		if leftRight == nil{
+			flatten(root.Right)
+		} else {
+			for ; leftRight.Right != nil; {
+				leftRight = leftRight.Right
+			}
+			left := root.Left
+			root.Left = nil
+			root.Right = nil
+			leftRight.Right = right
+			flatten(left)
+			root.Right = left
+		}
+	}
+}
