@@ -1,0 +1,17 @@
+func connect(root *Node) *Node {
+	if root == nil{
+		return nil
+	}
+	left := connect(root.Left)
+	right := connect(root.Right)
+	leftR := left
+	rightL := right
+	for ; leftR != nil; {
+		leftR.Next = rightL
+		leftR = leftR.Right
+		rightL = rightL.Left
+	}
+	root.Left = left
+	root.Right = right
+	return root
+}
