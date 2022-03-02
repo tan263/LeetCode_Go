@@ -1,0 +1,15 @@
+func pathSum(root *TreeNode, targetSum int) [][]int {
+	if root == nil{
+		return nil
+	} 
+	if root.Left == nil && root.Right == nil && targetSum == root.Val{
+		return [][]int{{targetSum}}
+	}
+	lastL := pathSum(root.Left, targetSum - root.Val)
+	lastR := pathSum(root.Right, targetSum - root.Val)
+	lastL = append(lastL, lastR...)
+	for i := range lastL{
+		lastL[i] = append([]int{root.Val}, lastL[i]...)
+	}
+	return lastL
+}
