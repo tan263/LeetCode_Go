@@ -1,0 +1,17 @@
+func minimumTotal(triangle [][]int) int {
+	if len(triangle) == 1{
+		return triangle[0][0]
+	}
+	h := len(triangle)
+	s := triangle[len(triangle)-1]
+	for i := h-2; i >= 0; i--{
+		for j, v := range triangle[i]{
+			if s[j] < s[j+1]{
+				s[j] += v
+			} else {
+				s[j] = s[j+1] + v
+			}
+		}
+	}
+	return s[0]
+}
