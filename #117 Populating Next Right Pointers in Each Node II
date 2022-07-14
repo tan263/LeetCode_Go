@@ -1,0 +1,53 @@
+func connect(root *Node) *Node {
+	if root == nil{
+		return nil
+	}
+	left := connect(root.Left)
+	right := connect(root.Right)
+
+	leftL := left
+	rightL := right
+	for leftL != nil {
+		leftR := leftL
+		for leftR.Next != nil{
+			leftR = leftR.Next
+		}
+		for {
+			if leftL.Left != nil{
+				leftL = leftL.Left
+				break
+			}
+			if leftL.Right != nil{
+				leftL = leftL.Right
+				break
+			}
+			leftL = leftL.Next
+			if leftL == nil{
+				break
+			}
+		}
+		if rightL != nil{
+			leftR.Next = rightL
+		} else {
+			break
+		}
+		for {
+			if rightL.Left != nil{
+				rightL = rightL.Left
+				break
+			}
+			if rightL.Right != nil{
+				rightL = rightL.Right
+				break
+			}
+			rightL = rightL.Next
+			if rightL == nil{
+				break
+			}
+		}
+	}
+
+	root.Left = left
+	root.Right = right
+	return root
+}
