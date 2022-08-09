@@ -1,0 +1,19 @@
+func kthSmallest(root *TreeNode, k int) int {
+    arr := inorderSelect(root, k)
+    return arr[k-1]
+}
+
+func inorderSelect(current *TreeNode, k int) []int {
+    var arr []int  
+    if current.Left != nil{
+        arr = inorderSelect(current.Left, k)
+    }
+    if len(arr) >= k{
+        return arr
+    }
+    arr = append(arr, current.Val)
+    if current.Right != nil{
+        arr = append(arr, inorderSelect(current.Right, k)...)
+    }
+    return arr
+}
