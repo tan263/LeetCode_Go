@@ -1,0 +1,18 @@
+func reverseBits(num uint32) uint32 {
+    low := uint32(0x55555555)
+    high := uint32(0xAAAAAAAA)
+    num = (num & low) << 1 + (num & high) >> 1
+    low = 0x33333333
+    high = 0xCCCCCCCC
+    num = (num & low) << 2 + (num & high) >> 2
+    low = 0x0F0F0F0F
+    high = 0xF0F0F0F0
+    num = (num & low) << 4 + (num & high) >> 4
+    low = 0x00FF00FF
+    high = 0xFF00FF00
+    num = (num & low) << 8 + (num & high) >> 8
+    low = 0x0000FFFF
+    high = 0xFFFF0000
+    num = (num & low) << 16 + (num & high) >> 16
+    return num
+}
