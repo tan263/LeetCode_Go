@@ -1,0 +1,42 @@
+func totalNQueens(n int) int {
+    awns := 0
+    used := make([]bool, n)
+    leftDiag := make([]bool, 3*n)
+    rightDiag := make([]bool, 3*n)
+    
+    
+    for j := 0; j < n; j++{
+        update(n, 0, j, used, leftDiag, rightDiag)
+        awns = solve(n, 0, j, used, leftDiag, rightDiag, awns)
+        revert(n, 0, j, used, leftDiag, rightDiag)
+    }
+    
+    return awns
+}
+
+func update(n int, r int, c int, used []bool, leftDiag []bool, rightDiag []bool) {
+    used[c] = true
+    leftDiag[r+c+n] = true
+    rightDiag[r-c+n] = true
+}
+
+func revert(n int, r int, c int, used []bool, leftDiag []bool, rightDiag []bool) {
+    used[c] = false
+    leftDiag[r+c+n] = false
+    rightDiag[r-c+n] = false
+}
+
+func solve(n int, r int, c int, used []bool, leftDiag []bool, rightDiag []bool, awns int) int {
+    if r == n-1{
+        awns ++
+    } else{
+        for j := 0; j < n; j++{
+            if used[j] == false && leftDiag[r+1+j+n] == false && rightDiag[r+1-j+n] == false {
+                update(n, r+1, j, used, leftDiag, rightDiag)
+                awns = solve(n, r+1, j, used, leftDiag, rightDiag, awns)
+                revert(n, r+1, j, used, leftDiag, rightDiag)
+            }
+        }
+    }
+    return awns
+}
