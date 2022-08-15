@@ -1,0 +1,64 @@
+func solveNQueens(n int) [][]string {
+    awns := make([][]int, 0)
+    used := make([]bool, n)
+    leftDiag := make([]bool, 3*n)
+    rightDiag := make([]bool, 3*n)
+    
+    
+    for j := 0; j < n; j++{
+        awn := make([]int, n)
+        update(n, 0, j, used, leftDiag, rightDiag, awn)
+        awns = solve(n, 0, j, used, leftDiag, rightDiag, awns, awn)
+        revert(n, 0, j, used, leftDiag, rightDiag, awn)
+    }
+    solutions := make([][]string, 0)
+    if len(awns) != 0{
+        lines := make([]string, n)
+        line := ""
+        for i := 0; i < n; i++{
+            line += "."
+        }
+        for i := 0; i < n; i++{
+            lines[i] = line[:i] + "Q" + line[i+1:] 
+        }
+        for _, awn := range awns{
+            solution := make([]string, n)
+            for r, c := range awn{
+                solution[r] = lines[c]
+            }
+            solutions = append(solutions, solution)
+        }
+    }
+    return solutions
+}
+
+func update(n int, r int, c int, used []bool, leftDiag []bool, rightDiag []bool, awn []int) {
+    used[c] = true
+    leftDiag[r+c+n] = true
+    rightDiag[r-c+n] = true
+    awn[r] = c
+}
+
+func revert(n int, r int, c int, used []bool, leftDiag []bool, rightDiag []bool, awn []int) {
+    used[c] = false
+    leftDiag[r+c+n] = false
+    rightDiag[r-c+n] = false
+    awn[r] = 0
+}
+
+func solve(n int, r int, c int, used []bool, leftDiag []bool, rightDiag []bool, awns [][]int, awn[]int) [][]int {
+    if r == n-1{
+        awnCopy := make([]int, n)
+        copy(awnCopy, awn)
+        awns = append(awns, awnCopy)
+    } else{
+        for j := 0; j < n; j++{
+            if used[j] == false && leftDiag[r+1+j+n] == false && rightDiag[r+1-j+n] == false {
+                update(n, r+1, j, used, leftDiag, rightDiag, awn)
+                awns = solve(n, r+1, j, used, leftDiag, rightDiag, awns, awn)
+                revert(n, r+1, j, used, leftDiag, rightDiag, awn)
+            }
+        }
+    }
+    return awns
+}
