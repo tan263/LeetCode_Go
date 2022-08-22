@@ -1,0 +1,24 @@
+func isValidSudoku(board [][]byte) bool {
+    checkColumns := make([]map[byte]bool, 9)
+    checkBoxes := make([]map[byte]bool, 9)
+    for i := 0; i < 9; i++{
+        checkColumns[i] = make(map[byte]bool, 9)
+        checkBoxes[i] = make(map[byte]bool, 9)
+    }
+    for i, row := range(board) {
+        checkRow := make(map[byte]bool, 9)
+        for j, element := range(row){
+            if element == '.'{
+                continue
+            }
+            if checkColumns[j][element] || checkRow[element] || checkBoxes[(i/3)*3+j/3][element] {
+                return false
+            }
+
+            checkColumns[j][element] = true
+            checkRow[element] = true
+            checkBoxes[(i/3)*3+j/3][element] = true
+        }
+    } 
+    return true
+}
