@@ -1,0 +1,26 @@
+func trap(height []int) int {
+    maxL := height[0]
+    maxR := height[len(height)-1]
+    amount := 0
+    i := 1
+    j := len(height)-2
+    for ; i <= j; {
+        if maxL < maxR {
+            if height[i] >= maxL {
+                maxL = height[i]
+            } else {
+                amount += maxL - height[i]
+            }
+            i++
+        } else{
+            if height[j] >= maxR {
+                maxR = height[j]
+            } else {
+                amount += maxR - height[j]
+            }
+            j--
+        }
+    }
+    
+    return amount
+}
