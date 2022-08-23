@@ -1,0 +1,29 @@
+func longestConsecutive(nums []int) int {
+    count := make(map[int]bool, len(nums))
+    for _, n := range(nums){
+        count[n] = true
+    }
+    con1 := 0
+    con2 := 0
+    for n := range(count) {
+        if count[n] && !count[n-1] {
+            count[n] = false
+            con1 = countAfter(n+1, count) + 1
+        }
+        if con1 > con2 {
+            con2 = con1
+            con1 = 0
+        }
+    }
+    return con2
+}
+
+
+func countAfter(n int, count map[int]bool) int{
+    if count[n] {
+        count[n] = false
+        return countAfter(n+1, count) + 1
+    } else{
+        return 0
+    }
+}
