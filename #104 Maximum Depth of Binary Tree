@@ -1,0 +1,33 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func maxDepth(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    level := 0
+    queue := []*TreeNode{root}
+    for ; ; {
+        if len(queue) == 0 {
+            break
+        }
+        level ++
+        l := len(queue)
+        for i := 0; i < l; i++{
+            if queue[i].Left != nil{
+                queue = append(queue, queue[i].Left)
+            }
+            if queue[i].Right != nil{
+                queue = append(queue, queue[i].Right)
+            }
+        }
+        queue = queue[l:]
+    }
+    
+    return level
+}
