@@ -1,0 +1,22 @@
+func maxArea(height []int) int {
+    left := 0
+    right := len(height) - 1
+    amount := 0
+    
+    for ; left < right; {
+        h := height[left]
+        w := right - left
+        if height[left] > height[right]{
+            h = height[right]
+            right --
+        } else {
+            left ++
+        }
+        currentAmount := w * h
+        if currentAmount > amount {
+            amount = currentAmount
+        }
+    }
+    
+    return amount
+}
