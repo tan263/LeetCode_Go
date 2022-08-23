@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func diameterOfBinaryTree(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    d := 0
+    var dfs func(root *TreeNode) int
+    dfs = func(root *TreeNode) int {
+        if root == nil {
+            return 0
+        }
+        dL := dfs(root.Left)
+        dR := dfs(root.Right)
+        if dL + dR > d {
+            d = dL + dR
+        }
+
+        if dR > dL {
+            dL = dR
+        }
+        return dL + 1
+    }
+    dfs(root)
+    return d
+}
