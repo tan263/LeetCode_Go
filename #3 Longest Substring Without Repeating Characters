@@ -1,0 +1,27 @@
+func lengthOfLongestSubstring(s string) int {
+    if len(s) == 0 {
+        return 0
+    }
+    left := 0
+    right := 1
+    count := 1
+    exist := make(map[byte]bool, 1)
+    exist[s[0]] = true
+    
+    for ; right < len(s); {
+        if right - left > count {
+            count = right - left
+        }
+        for ; exist[s[right]]; {
+            exist[s[left]] = false
+            left ++
+        }
+        exist[s[right]] = true
+        right ++
+    }
+    if right - left > count {
+        count = right - left
+    }
+    
+    return count
+}
