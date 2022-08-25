@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isBalanced(root *TreeNode) bool {
+    var dfs func(root *TreeNode) int
+    balanced := true
+    dfs = func(root *TreeNode) int {
+        if root == nil{
+            return 0
+        }
+        left := dfs(root.Left)
+        right := dfs(root.Right)
+        if left - right > 1 || left - right < -1{
+            balanced = false
+        }
+        if left > right {
+            right = left
+        }
+        return right + 1
+    }
+    dfs(root)
+    return balanced
+}
