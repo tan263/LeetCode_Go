@@ -1,0 +1,15 @@
+func subsets(nums []int) [][]int {
+    sub := [][]int{[]int{}}
+    
+    for _, n := range(nums) {
+        current := make([][]int, len(sub))
+        for j, s := range(sub) {
+            current[j] = make([]int, len(s))
+            copy(current[j], s)
+            current[j] = append(current[j], n)
+        }
+        sub = append(sub, current...)
+    }
+    
+    return sub
+}
