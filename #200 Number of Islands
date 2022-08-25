@@ -1,0 +1,46 @@
+func numIslands(grid [][]byte) int {
+    visit := make([][]bool, len(grid))
+    for i := 0; i < len(grid); i++{
+        visit[i] = make([]bool, len(grid[0]))
+    }
+    num := 0
+    
+    var dfs func(i int, j int)
+    dfs = func(i int, j int){
+        // fmt.Println(i,j)
+        visit[i][j] = true
+        if j > 0 {
+            if !visit[i][j-1] && grid[i][j-1] == '1'{
+                dfs(i, j-1)
+            }
+        }
+        if i > 0 {
+            if !visit[i-1][j] && grid[i-1][j] == '1'{
+                dfs(i-1, j)
+            }
+        } 
+        if j < len(grid[0])-1 {
+            if !visit[i][j+1] && grid[i][j+1] == '1'{
+                dfs(i, j+1)
+            }
+        }
+        if i < len(grid)-1 {
+            if !visit[i+1][j] && grid[i+1][j] == '1'{
+                dfs(i+1, j)
+            }
+        } 
+    }
+    
+    for i := range(grid){
+        for j, e := range(grid[i]) {
+            // fmt.Println(visit)
+            if e == '1' && !visit[i][j] {
+                num++
+                dfs(i, j)
+            }
+        }
+    }
+    
+    
+    return num
+}
