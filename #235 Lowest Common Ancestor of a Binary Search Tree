@@ -1,0 +1,23 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val   int
+ *     Left  *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+    ancester := root
+    for ; ancester != nil; {
+        if p.Val < ancester.Val && q.Val < ancester.Val {
+            ancester = ancester.Left
+        } else if p.Val > ancester.Val && q.Val > ancester.Val {
+            ancester = ancester.Right
+        } else {
+            return ancester
+        }
+    }
+   
+    return ancester
+}
