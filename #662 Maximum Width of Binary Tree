@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func widthOfBinaryTree(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    queue := []*TreeNode{root}
+    index := []int{0}
+    
+    width := 0
+    
+    for ; ; {
+        l := len(queue)
+        if l == 0 {
+            break
+        }
+        
+        w := index[l-1] - index[0] + 1
+        if w > width {
+            width = w
+        }
+        for i := 0; i < l; i++{
+            if queue[i].Left != nil {
+                queue = append(queue, queue[i].Left)
+                index = append(index, index[i]*2)
+            }
+            if queue[i].Right != nil {
+                queue = append(queue, queue[i].Right)
+                index = append(index, index[i]*2 + 1)
+            }
+        } 
+        queue = queue[l:]
+        index = index[l:]
+    }
+    return width
+}
