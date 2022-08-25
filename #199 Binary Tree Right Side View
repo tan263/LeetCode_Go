@@ -1,0 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func rightSideView(root *TreeNode) []int {
+    if root == nil {
+        return []int{}
+    }
+    queue := []*TreeNode{root}
+    ord := make([]int, 0)
+    for ; ; {
+        l := len(queue)
+        for i := 0; i < l; i++{
+            if queue[i].Right != nil{
+                queue = append(queue, queue[i].Right)
+            }
+            if queue[i].Left != nil{
+                queue = append(queue, queue[i].Left)
+            }
+        }
+        ord = append(ord, queue[0].Val)
+        queue = queue[l:]
+        if len(queue) == 0{
+            break
+        }
+    }
+    return ord
+}
