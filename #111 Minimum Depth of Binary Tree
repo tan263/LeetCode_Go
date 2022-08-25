@@ -1,0 +1,36 @@
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func minDepth(root *TreeNode) int {
+    if root == nil {
+        return 0
+    }
+    queue := []*TreeNode{root}
+    depth := 0
+    for ; ; {
+        l := len(queue)
+        if l == 0 {
+            break
+        }
+        depth ++
+        for i := 0; i < l; i++ {
+            fmt.Println(queue[i])
+            if queue[i].Left == nil && queue[i].Right == nil {
+                return depth
+            }
+            if queue[i].Left != nil {
+                queue = append(queue, queue[i].Left)
+            }
+            if queue[i].Right != nil {
+                queue = append(queue, queue[i].Right)
+            }
+        }
+        queue = queue[l:]
+    }
+    return depth
+}
