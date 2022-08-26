@@ -1,0 +1,25 @@
+func combinationSum(candidates []int, target int) [][]int {
+    l := len(candidates)
+    result := [][]int{}
+    
+    var dfs func(current []int, i int, sum int)
+    dfs = func(current []int, i int, sum int) {
+        if sum == 0{
+            currentCopy := make([]int, len(current))
+            copy(currentCopy, current)
+            result = append(result, currentCopy)
+            return
+        }
+        if i >= l || sum < 0 {
+            return
+        }
+        current = append(current, candidates[i])
+        dfs(current, i, sum-candidates[i])
+        current = current[:len(current)-1]
+        dfs(current, i+1, sum)
+    } 
+    
+    dfs([]int{}, 0, target)
+
+    return result
+}
