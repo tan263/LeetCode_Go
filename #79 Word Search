@@ -1,0 +1,44 @@
+func exist(board [][]byte, word string) bool {
+    m := len(board)
+    n := len(board[0])
+    var used [][]bool
+    used = make([][]bool, m)
+    for i := 0; i < m; i++ {
+        used[i] = make([]bool, n)
+    }
+    
+    var dfs func(i, j int, w string) bool
+    dfs = func(i, j int, w string) bool {
+        if len(w) == 0 {
+            return true
+        }
+        if i < m && j <n && i >=0 && j >=0{
+            if w[0] != board[i][j] || used[i][j]{
+                return false
+            }
+            used[i][j] = true
+            find1 := dfs(i+1, j, w[1:])
+            find2 := dfs(i, j+1, w[1:])
+            find3 := dfs(i-1, j, w[1:])
+            find4 := dfs(i, j-1, w[1:])
+            if !find1 && !find2 && !find3 && !find4{
+                used[i][j] = false
+                return false
+            } else {
+                return true
+            }
+        }
+        return false
+    }
+    
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            find := dfs(i, j, word)
+            if find {
+                return true
+            }
+        }
+    }
+    
+    return false
+}
