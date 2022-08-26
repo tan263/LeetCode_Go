@@ -1,0 +1,28 @@
+func search(nums []int, target int) int {
+    var binarySearch func() int
+    m := -1
+    i, j := 0, len(nums)-1
+    binarySearch = func() int{
+        if i <= j {
+            m = (i + j) / 2
+            fmt.Println( nums[i] , nums[m],  nums[j], target, i, j)
+            if nums[m] == target{
+                return m
+            }
+            if nums[i] <= target && target < nums[m]{
+                j = m-1
+            } else if nums[i] <= nums[m] && !(nums[i] <= target && target < nums[m]){
+                i = m+1
+            } else if nums[m] < target && target <= nums[j]{
+                i = m+1
+            } else {
+                j = m-1
+            }
+            return binarySearch()
+        }
+        return -1
+    }
+    
+    m = binarySearch()
+    return m
+}
