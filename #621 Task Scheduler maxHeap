@@ -1,0 +1,53 @@
+import "container/heap"
+
+type maxHeap []int
+
+func(h maxHeap) Len() int { return len(h)}
+
+func(h maxHeap) Less(i, j int) bool {return h[i] > h[j]}
+
+func(h maxHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i]}
+
+func(h *maxHeap) Push(e interface{}) { *h = append(*h, e.(int))}
+
+func(h *maxHeap) Pop() interface{} {
+    old := *h
+    l := len(old)
+    temp := old[l-1]
+    *h = old[:l-1]
+    return temp
+}
+
+func leastInterval(tasks []byte, n int) int {
+    storage := make(map[byte]int, 0)
+    for _, task := range(tasks) {
+        storage[task] = storage[task] + 1
+    }
+    h := &maxHeap{}
+    heap.Init(h)
+    for task := range(storage) {
+        heap.Push(h, storage[task])
+    }
+    waitTime := len(tasks)
+    ks := make([]int, n+1)
+    
+    for len(*h) > 0 {
+        for i := 0; i < n + 1; i++{
+            if len(*h) > 0 {
+                ks[i] = heap.Pop(h).(int)
+            } else if ks[0] == 1{
+                 return waitTime
+            } else {
+                ks[i] = 0
+                
+                waitTime ++
+            }
+        }
+        for i := 0; i < n+1; i++{
+            if ks[i] > 1 {
+                heap.Push(h, ks[i]-1)
+            }
+        }
+    }
+    return waitTime
+}
