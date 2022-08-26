@@ -1,0 +1,33 @@
+import "container/heap"
+
+type minHeap []int
+
+func(h minHeap) Len() int { return len(h)}
+
+func(h minHeap) Less(i, j int) bool { return h[i] < h[j]}
+
+func(h minHeap) Swap(i, j int) {h[i], h[j] = h[j], h[i]}
+
+func(h *minHeap) Push(e interface{}) { *h = append(*h, e.(int))}
+
+func(h *minHeap) Pop() interface{} {
+    old := *h
+    l := len(old)
+    temp := old[l-1]
+    *h = old[:l-1]
+    return temp
+}
+
+func findKthLargest(nums []int, k int) int {
+    h := &minHeap{}
+    heap.Init(h)
+    for _, n := range(nums) {
+        if len(*h) < k {
+            heap.Push(h, n)
+        } else {
+            heap.Push(h, n)
+            heap.Pop(h)
+        }
+    }
+    return heap.Pop(h).(int)
+}
