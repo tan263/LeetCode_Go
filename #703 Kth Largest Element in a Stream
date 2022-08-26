@@ -1,0 +1,66 @@
+import "container/heap"
+
+type intheap []int
+
+func(h intheap) Len() int {return len(h)}
+
+func(h intheap) Less(i, j int) bool {return h[i] < h[j]}
+
+func(h intheap) Swap(i, j int) {
+    h[i], h[j] = h[j], h[i]
+}
+
+func(h *intheap) Push(n interface{}) {
+    *h = append(*h, n.(int))
+}
+
+func(h *intheap) Pop() interface{}{
+    old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
+type KthLargest struct {
+    K int
+    Elements *intheap
+}
+
+
+func Constructor(k int, nums []int) KthLargest {
+    h := &intheap{}
+    heap.Init(h)
+    
+    for _, n := range(nums) {
+        heap.Push(h, n)
+    }
+    
+    for ; ; {
+        if len(*h) > k {
+            heap.Pop(h)
+        }else{
+            break
+        }
+    }
+    newKthLargest := KthLargest{k, h}
+    return newKthLargest 
+}
+
+
+func (this *KthLargest) Add(val int) int {
+    if len(*this.Elements) < this.K{
+        heap.Push(this.Elements, val)
+    } else if val > (*this.Elements)[0]{
+        heap.Push(this.Elements, val)
+        heap.Pop(this.Elements)
+    }
+    return (*this.Elements)[0]
+}
+
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * obj := Constructor(k, nums);
+ * param_1 := obj.Add(val);
+ */
