@@ -1,0 +1,32 @@
+func findMin(nums []int) int {
+    i := 0
+    j := len(nums)-1
+    
+    
+    var binary func() int
+    
+    binary = func() int{
+        
+        if i == j {
+            return i
+        }
+        m := (i + j) / 2
+        if nums[i] < nums[j] {
+            return i
+        } else if nums[i] > nums[m] {
+            j = m
+            i = i+1
+            return binary()
+        } else if nums[m] > nums[j] {
+            i = m+1
+            return binary()
+        } else if nums[i] == nums[m]{
+            j = m
+            return binary()
+        } else {
+            i = m
+            return binary()
+        }
+    }
+    return nums[binary()]
+}
