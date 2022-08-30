@@ -1,0 +1,64 @@
+type Tree struct {
+    Children []*Tree
+    End bool
+}
+
+type WordDictionary struct {
+    Tree *Tree
+}
+
+
+func Constructor() WordDictionary {
+    return WordDictionary{&Tree{make([]*Tree, 26), false}}
+}
+
+
+func (this *WordDictionary) AddWord(word string)  {
+    root := this.Tree
+    for _, letter := range(word) {
+        if root.Children[letter - 'a'] ==  nil {
+            root.Children[letter - 'a'] = &Tree{make([]*Tree, 26), false}
+        }
+        root = root.Children[letter - 'a']
+    }
+    root.End = true
+}
+
+
+func (this *WordDictionary) Search(word string) bool {    
+    var search func(root *Tree, w string) bool
+    search = func(root *Tree, w string) bool {
+        for i, letter := range(w) {
+            if letter == '.' {
+                for _, child := range(root.Children){
+                    if child != nil {
+                        if search(child, w[i+1:]) {
+                            return true
+                        }
+                    }
+                }
+                return false
+            } else {
+                if root.Children[letter - 'a'] ==  nil {
+                    return false
+                }
+                root = root.Children[letter - 'a']
+            }
+        }
+        if root.End == true {
+            return true
+        }
+        
+        return false
+    }
+    
+    return search(this.Tree, word)
+}
+
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.AddWord(word);
+ * param_2 := obj.Search(word);
+ */
