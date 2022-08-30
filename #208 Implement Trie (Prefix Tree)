@@ -1,0 +1,62 @@
+type Tree struct {
+    Children []*Tree
+    End bool
+}
+
+type Trie struct {
+    Tree *Tree
+}
+
+
+func Constructor() Trie {
+    return Trie{&Tree{make([]*Tree, 26), false}}
+}
+
+
+func (this *Trie) Insert(word string)  {
+    root := this.Tree
+    for _, letter := range(word) {
+        if root.Children[letter - 'a'] == nil {
+            root.Children[letter - 'a'] = &Tree{make([]*Tree, 26), false}
+        } 
+        root = root.Children[letter - 'a']
+    }
+    root.End = true
+}
+
+
+func (this *Trie) Search(word string) bool {
+    root := this.Tree
+    for i, letter := range(word) {
+        root = root.Children[letter - 'a']
+        if root != nil {
+                if i == len(word)-1 && root.End {
+                return true
+            }
+        } else {
+            return false
+        }
+    }
+    return false
+}
+
+
+func (this *Trie) StartsWith(prefix string) bool {
+    root := this.Tree
+    for _, letter := range(prefix) {
+        root = root.Children[letter - 'a']
+        if root == nil {
+            return false
+        }
+    }
+    return true
+}
+
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Insert(word);
+ * param_2 := obj.Search(word);
+ * param_3 := obj.StartsWith(prefix);
+ */
