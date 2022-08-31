@@ -1,0 +1,35 @@
+func isMatch(s string, p string) bool {
+    matches := make([][]bool, len(s)+1)
+    for i := 0; i<= len(s); i++ {
+        matches[i] = make([]bool, len(p)+1)
+    }
+    matches[len(s)][len(p)] = true
+    
+    for i := len(s); i >= 0; i-- {
+        for j := len(p) - 1; j >=0; j-- {
+            if p[j] == '.' {
+                if j+1 < len(p) && p[j+1] == '*'{
+                    matches[i][j] = matches[i][j+2]
+                    if i < len(s) {
+                        matches[i][j] = matches[i][j] || matches[i+1][j]
+                    }
+                } else if i < len(s){
+                    matches[i][j] = matches[i+1][j+1]
+                }
+            } else {
+                if j+1 < len(p) && p[j+1] == '*'{
+                    if i < len(s) && s[i] == p[j] {
+                        matches[i][j] = matches[i+1][j]
+                    }
+                    matches[i][j] = matches[i][j] || matches[i][j+2]
+                } else if i < len(s) && s[i] == p[j] {
+                    matches[i][j] = matches[i+1][j+1]
+                } else {
+                    matches[i][j] = false
+                }
+            }
+        }
+    }
+    
+    return matches[0][0]
+}
