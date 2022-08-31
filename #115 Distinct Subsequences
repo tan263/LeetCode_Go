@@ -1,0 +1,16 @@
+func numDistinct(s string, t string) int {
+    nums := make([][]int, len(s) + 1)
+    for i := 0; i <= len(s); i++ {
+        nums[i] = make([]int, len(t) + 1)
+        nums[i][len(t)] = 1
+    }
+    for i := len(s)-1; i >= 0; i -- {
+        for j := len(t)-1; j >= 0; j -- {
+            if s[i] == t[j] {
+                nums[i][j] = nums[i+1][j+1]
+            }
+            nums[i][j] += nums[i+1][j]
+        }
+    } 
+    return nums[0][0]
+}
