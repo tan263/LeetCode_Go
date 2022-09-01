@@ -1,0 +1,40 @@
+func maxLength(arr []string) int {
+    var dfs func(arrC []string) int
+    dfs = func(arrC []string) int {
+        if len(arrC) > 0 {
+            s := arrC[0]
+            arrCopy1 := make([]string, len(arrC) - 1)
+            copy(arrCopy1, arrC[1:])
+            n := dfs(arrCopy1)
+            n2 := 0
+            if validString(s) {
+                arrCopy := []string{}
+                for k := range(arrC) {
+                    if validString(s + arrC[k]) {
+                        arrCopy = append(arrCopy, arrC[k])
+                    }
+                }
+                n2 = len(s) + dfs(arrCopy)
+            }
+            if n2 > n {
+                n = n2
+            } 
+            return n
+        }
+        return 0
+    }
+    
+    return dfs(arr)
+}
+
+func validString(s string) bool {
+    counter := make(map[rune]int, len(s))
+    for _, ch := range(s) {
+        if _, ok := counter[ch]; ok {
+            return false
+        } else {
+            counter[ch] = 1
+        }
+    }
+    return true
+}
