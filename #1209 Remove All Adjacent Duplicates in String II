@@ -1,0 +1,24 @@
+func removeDuplicates(s string, k int) string {
+    stackCh := []byte{}
+    stackNum := []int{}
+    
+    for i := 0; i < len(s); i++ {
+        if len(stackCh) > 0 && s[i] == stackCh[len(stackCh)-1] {
+            stackNum[len(stackNum)-1] += 1
+            if stackNum[len(stackNum)-1] == k {
+                stackCh = stackCh[:len(stackNum)-1]
+                stackNum = stackNum[:len(stackNum)-1]
+            } 
+        } else {
+            stackCh = append(stackCh, s[i])
+            stackNum = append(stackNum, 1)
+        }
+    }
+    r := ""
+    for i, ch := range(stackCh) {
+        for n := 0; n < stackNum[i]; n++ {
+            r += string(ch)
+        }
+    }
+    return r
+}
