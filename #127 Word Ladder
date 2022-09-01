@@ -1,0 +1,41 @@
+func ladderLength(beginWord string, endWord string, wordList []string) int {
+    dict := make(map[string]bool)
+    for _, v := range wordList {
+        if v != beginWord{
+            dict[v] = true
+        }
+    }
+    if _, ok := dict[endWord]; !ok {
+        return 0
+    }
+    
+    queue := []string{beginWord}
+    
+    result := 1
+    levelCount := len(queue)
+    nextLevelCount := 0
+    for k := 0; len(queue) > 0; k++{
+        if k >= levelCount{
+            result++
+            levelCount += nextLevelCount
+            nextLevelCount = 0
+        }
+        w := queue[0]
+        if w == endWord {
+            return result
+        }
+        queue = queue[1:]
+        
+        for ch := 'a'; ch <= 'z'; ch++ {
+            for i := range(w) {
+                v := w[:i] + string(ch) + w[i+1:]
+                if _, ok := dict[v]; ok {
+                    queue = append(queue, v)
+                    delete(dict, v)
+                    nextLevelCount++
+                }
+            }
+        }
+    }
+    return 0
+}
