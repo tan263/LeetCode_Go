@@ -1,0 +1,44 @@
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Next *Node
+ *     Random *Node
+ * }
+ */
+
+func copyRandomList(head *Node) *Node {
+    if head == nil {
+        return nil
+    }
+    originalMap := make(map[*Node]int)
+    originalMap[head] = 0
+    current := head.Next
+    newHead := &Node{Val: head.Val}
+    newMap := []*Node{}
+    newMap = append(newMap, newHead)
+    newCurrent := newHead
+    
+    for i := 1; current != nil; i++ {
+        originalMap[current] = i
+        next := &Node{Val: current.Val}
+        newCurrent.Next = next
+        newCurrent = newCurrent.Next
+        newMap = append(newMap, newCurrent)
+        current = current.Next
+    }
+    
+    current = head
+    newCurrent = newHead
+    
+    for ; current != nil; {
+        if current.Random != nil {
+            i := originalMap[current.Random]
+            newCurrent.Random = newMap[i]
+        }
+        current = current.Next
+        newCurrent = newCurrent.Next
+    }
+    
+    return newHead
+}
