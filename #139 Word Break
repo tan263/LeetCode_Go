@@ -1,0 +1,16 @@
+func wordBreak(s string, wordDict []string) bool {
+    dp := make([]bool, len(s)+1)
+    dp[0] = true
+    
+    for i := 1; i <= len(s); i++ {
+        for _, w := range(wordDict) {
+            if i >= len(w) && dp[i-len(w)] {
+                if s[i-len(w):i] == w {
+                    dp[i] = true
+                }
+            }
+        }
+    }
+    fmt.Println(dp)
+    return dp[len(s)]
+}
