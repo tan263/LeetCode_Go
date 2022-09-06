@@ -25,17 +25,24 @@ func Constructor(capacity int) LRUCache {
     }
 }
 
-
-func (this *LRUCache) Get(key int) int {
-    if node, ok := this.Cache[key]; ok && len(this.Cache) > 0{
-        val := node.Val
+func (this *LRUCache) remove(node *Node) {
         previous := node.Previous
         next := node.Next
         previous.Next, next.Previous = next, previous
+}
+
+func (this *LRUCache) insert(node *Node) {
         node.Previous = this.Tail.Previous
         this.Tail.Previous.Next = node
         node.Next = this.Tail
         this.Tail.Previous = node
+}
+
+func (this *LRUCache) Get(key int) int {
+    if node, ok := this.Cache[key]; ok && len(this.Cache) > 0{
+        val := node.Val
+        this.remove(node)
+        this.insert(node)
         
         return val
     }
@@ -46,24 +53,16 @@ func (this *LRUCache) Get(key int) int {
 func (this *LRUCache) Put(key int, value int)  {
     if node, ok := this.Cache[key]; ok {
         node.Val = value
-        previous := node.Previous
-        next := node.Next
-        previous.Next, next.Previous = next, previous
-        node.Previous = this.Tail.Previous
-        this.Tail.Previous.Next = node
-        node.Next = this.Tail
-        this.Tail.Previous = node
+        this.remove(node)
+        this.insert(node)
     } else{
         if _, ok := this.Cache[key]; !ok && len(this.Cache) == this.Capacity {
-            keyToDelete := this.Head.Next.Key
-            delete(this.Cache, keyToDelete)
-            this.Head.Next = this.Head.Next.Next
-            this.Head.Next.Previous = this.Head
+            delete(this.Cache, this.Head.Next.Key)
+            this.remove(this.Head.Next)
         }
         node := &Node{Key:key, Val: value, Previous: this.Tail.Previous, Next: this.Tail}
         this.Cache[key] = node
-        node.Previous.Next = node
-        this.Tail.Previous = node
+        this.insert(node)
     }
 }
 
