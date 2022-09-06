@@ -1,0 +1,91 @@
+func findLadders(beginWord string, endWord string, wordList []string) [][]string {
+    dict := make(map[string]bool)
+    for _, v := range wordList {
+        if v != beginWord{
+            dict[v] = true
+        }
+    }
+    if _, ok := dict[endWord]; !ok {
+        return [][]string{}
+    }
+    expression := make(map[string][]string, 0)
+    for i := range(beginWord) {
+            v := beginWord[:i] + "*" + beginWord[i+1:]
+            expression[v] = append(expression[v], beginWord)
+        }
+    for _, w := range(wordList) {
+        for i := range(w) {
+            v := w[:i] + "*" + w[i+1:]
+            expression[v] = append(expression[v], w)
+        }
+    }
+    queue := []string{beginWord}
+    branches := make([]map[string]struct{}, 0)
+    
+    count := 0
+    find := false
+    for k := 0; len(queue) > 0; k++{
+        levelL := len(queue)
+        branches = append(branches, make(map[string]struct{}))
+        for i := 0; i < levelL; i++{
+            w := queue[0]
+            branches[count][w] = struct{}{}
+            if w == endWord {
+                k = len(queue)
+                find = true
+                break
+            }
+            queue = queue[1:]
+            
+            for i := range(w) {
+                ex := w[:i] + "*" + w[i+1:]
+                for _, v := range(expression[ex]) {
+                    if _, ok := dict[v]; ok {
+                        queue = append(queue, v)
+                        delete(dict, v)
+                    }
+                }
+            }
+        }
+        count++
+        if find {
+            break
+        }
+    }
+    if count == 0 {
+        return [][]string{}
+    }
+    result := [][]string{}
+    
+    var dfs func(level int, w string, path []string)
+    dfs = func(level int, w string, path []string) {
+        if len(path) >= count {
+            return
+        }
+        for i := range(w) {
+            pattern := w[:i] + "*" + w[i+1:]
+            for _, v := range(expression[pattern]) {
+                
+                if _, ok := branches[level-1][v]; ok {
+                    path = append([]string{v}, path...)
+                    if v == beginWord {
+                        pathCopy := make([]string, len(path)) 
+                        copy(pathCopy, path)
+                        result = append(result, pathCopy)
+                        return
+                    }
+                    dfs(level-1, v, path)
+                    path = path[1:len(path)]
+                }
+            }
+        }
+    }
+    
+    dfs(count-1, endWord, []string{endWord})
+    
+    if len(result) == 1 && len(result[0]) == 1 {
+        return [][]string{}
+    }
+    
+    return result
+}
