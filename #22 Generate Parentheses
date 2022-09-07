@@ -1,0 +1,30 @@
+func generateParenthesis(n int) []string {
+    result := make([]string, 0)
+    s:= "("
+    var dfs func(l, r int)
+    dfs = func(l, r int) {
+        if l == r {
+            if l > 0 {
+                s += "("
+                dfs(l-1, r)
+                if len(s) == 2*n {result = append(result, s)}
+                s = s[:len(s)-1]
+            }
+        } else {
+            if l > 0 {
+                s += "("
+                dfs(l-1, r)
+                if len(s) == 2*n {result = append(result, s)}
+                s = s[:len(s)-1]
+            }
+            s += ")"
+            dfs(l, r-1)
+            if len(s) == 2*n {result = append(result, s)}
+            s = s[:len(s)-1]
+        }
+    }
+    
+    dfs(n-1, n)
+    
+    return result
+}
