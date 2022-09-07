@@ -10,46 +10,21 @@ func makesquare(matchsticks []int) bool {
     }
     total = total / 4
     sort.Ints(matchsticks)
-    a, b, c, d := 0, 0, 0, 0
-    var dfs func(i int)
-    dfs = func(i int) {
-        if i < 0 {return}
-        if a + matchsticks[i] <= total {
-            a += matchsticks[i]
-            dfs(i-1)
-            if a == b && b == c && c == d && a == total {
-                return
+    edges := make([]int, 4)
+    var dfs func(i int) bool
+    dfs = func(i int) bool {
+        if i < 0 {return true}
+        for k := 0; k < 4; k ++ {
+            if edges[k] + matchsticks[i] <= total {
+                edges[k] += matchsticks[i]
+                if dfs(i-1) {
+                    return true
+                }
+                edges[k] -= matchsticks[i]
             }
-            a -= matchsticks[i]
         }
-        if b + matchsticks[i] <= total {
-            b += matchsticks[i]
-            dfs(i-1)
-            if a == b && b == c && c == d && a == total {
-                return
-            }
-            b -= matchsticks[i]
-        }
-        if c + matchsticks[i] <= total {
-            c += matchsticks[i]
-            dfs(i-1)
-            if a == b && b == c && c == d && a == total {
-                return
-            }
-            c -= matchsticks[i]
-        }
-        if d + matchsticks[i] <= total {
-            d += matchsticks[i]
-            dfs(i-1)
-            if a == b && b == c && c == d && a == total {
-                return
-            }
-            d -= matchsticks[i]
-        }
+        return false
     }
-    dfs(len(matchsticks)-1)
-    if a == b && b == c && c == d && a == total {
-        return true
-    }
-    return false
+    
+    return dfs(len(matchsticks)-1)
 }
