@@ -1,0 +1,55 @@
+import "sort"
+
+func makesquare(matchsticks []int) bool {
+    total := 0
+    for _, l := range(matchsticks) {
+        total += l
+    }
+    if total % 4 != 0 {
+        return false
+    }
+    total = total / 4
+    sort.Ints(matchsticks)
+    a, b, c, d := 0, 0, 0, 0
+    var dfs func(i int)
+    dfs = func(i int) {
+        if i < 0 {return}
+        if a + matchsticks[i] <= total {
+            a += matchsticks[i]
+            dfs(i-1)
+            if a == b && b == c && c == d && a == total {
+                return
+            }
+            a -= matchsticks[i]
+        }
+        if b + matchsticks[i] <= total {
+            b += matchsticks[i]
+            dfs(i-1)
+            if a == b && b == c && c == d && a == total {
+                return
+            }
+            b -= matchsticks[i]
+        }
+        if c + matchsticks[i] <= total {
+            c += matchsticks[i]
+            dfs(i-1)
+            if a == b && b == c && c == d && a == total {
+                return
+            }
+            c -= matchsticks[i]
+        }
+        if d + matchsticks[i] <= total {
+            d += matchsticks[i]
+            dfs(i-1)
+            if a == b && b == c && c == d && a == total {
+                return
+            }
+            d -= matchsticks[i]
+        }
+    }
+    dfs(len(matchsticks)-1)
+    if a == b && b == c && c == d && a == total {
+        return true
+    }
+    return false
+}
