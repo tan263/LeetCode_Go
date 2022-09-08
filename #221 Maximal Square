@@ -1,0 +1,31 @@
+func maximalSquare(matrix [][]byte) int {
+    m := len(matrix)
+    n := len(matrix[0])
+    squares := make([][]int, m)
+    max := 0
+    for i := range(matrix) {
+        squares[i] = make([]int, n)
+        for j := range(matrix[0]) {
+            if matrix[i][j] == '1' {
+                if i > 0 && j > 0 {
+                    s := squares[i-1][j-1]
+                    v := squares[i-1][j]
+                    h := squares[i][j-1]
+                    squares[i][j] = 1 + min(s, v, h)
+                } else {
+                    squares[i][j] = 1
+                }
+                if squares[i][j] > max {
+                    max = squares[i][j]
+                }
+            }
+        }  
+    }
+    return max * max
+}
+
+func min(a, b, c int) int {
+    if a <= b { b = a }
+    if b <= c { c = b }
+    return c
+}
