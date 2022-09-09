@@ -1,0 +1,49 @@
+import "container/heap"
+import "sort"
+
+type minHeap []int
+
+func(h minHeap) Len() int { return len(h) }
+
+func(h minHeap) Less(i, j int) bool { return h[i] < h[j]}
+
+func(h minHeap) Swap(i, j int) { h[i], h[j] = h[j], h[i]}
+
+func(h *minHeap) Push(n interface{}) { *h = append(*h, n.(int)) }
+
+func(h *minHeap) Pop() interface{} {
+    old := *h
+    l := len(old)
+    e := old[l-1]
+    *h = old[:l-1]
+    return e
+}
+
+func(h *minHeap) Top() int {
+	old := *h
+	e := old[0]
+	return e
+}
+
+func MinMeetingRooms(intervals []*Interval) int {
+    if len(intervals) == 0 {
+        return 0
+    }
+    sort.Slice(intervals, func(i, j int) bool {
+        return intervals[i].Start < intervals[j].Start
+    })
+
+    rooms := &minHeap{}
+    heap.Init(rooms)
+    heap.Push(rooms, intervals[0].End)
+    last := intervals[0].End
+
+    for i := 1; i < len(intervals); i++ {
+        if intervals[i].Start >= last {
+            heap.Pop(rooms)
+        }
+        heap.Push(rooms, intervals[i].End)
+        last = rooms.Top()
+    }
+    return len(*rooms)
+}
