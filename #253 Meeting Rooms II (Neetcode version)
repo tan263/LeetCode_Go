@@ -1,0 +1,29 @@
+import "sort"
+
+func MinMeetingRooms(intervals []*Interval) int {
+	l := len(intervals)
+	starts := make([]int, l)
+	ends := make([]int, l)
+	for i := 0; i < l ; i++ {
+		starts[i] = intervals[i].Start
+		ends[i] = intervals[i].End
+	}
+	sort.Ints(starts)
+	sort.Ints(ends)
+	rooms, current := 0, 0
+	i, j := 0, 0
+	for ; i < l && j < l; {
+		if starts[i] < ends[j]{
+			current ++
+			i ++
+		} else {
+			current --
+			j ++
+		}
+		if current > rooms {
+			rooms = current
+		}
+	}
+
+	return rooms
+}
