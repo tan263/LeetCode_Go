@@ -1,0 +1,17 @@
+import "sort"
+
+func CanAttendMeetings(intervals []*Interval) bool {
+     sort.Slice(intervals, func(i, j int) bool{
+        return intervals[i].End < intervals[j].Start
+    })
+    if len(intervals) > 0 {
+        last := intervals[0].End
+        for i := 1; i < len(intervals); i++ {
+            if intervals[i].Start < last {
+                return false
+            } 
+        }
+    }
+    
+    return true
+}
