@@ -1,0 +1,15 @@
+func dailyTemperatures(temperatures []int) []int {
+    days := make([]int, len(temperatures))
+    stack := make([][]int, 1)
+    stack[0] = []int{temperatures[0], 0}
+    for d := 1; d < len(temperatures); d++ {
+        t := temperatures[d]
+        for ; stack[len(stack)-1][0] < t; {
+            days[stack[len(stack)-1][1]] = d - stack[len(stack)-1][1]
+            stack = stack[:len(stack)-1]
+            if len(stack) == 0 { break }
+        }
+        stack = append(stack, []int{temperatures[d], d})
+    }
+    return days
+}
